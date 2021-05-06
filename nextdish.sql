@@ -43,5 +43,5 @@ select sum(amount) from payment_sms p where p.date > (select max(date) from paym
 
 --update payment  set status = 'Paid' where status = '已付款';
 
-select  'Total paid:' || (SELECT sum(amount) from payment p where p.status ='Paid'  and p.date > (select max(date) from payment_last ps)) 
-|| ', pay Baofeng:' || sum(amount) from payment p where p.status ='Paid' and p.note <> 'Customer Tips'  and p.date > (select max(date) from payment_last ps);
+select  '总收款:' || (SELECT sum(amount) from payment p where p.status ='Paid'  and p.date > (select max(date) from payment_last ps)) 
+|| ', 应付保锋:' || sum(amount) from payment p where p.status ='Paid' and p.note <> 'Customer Tips'  and p.date > (select max(date) from payment_last ps);
