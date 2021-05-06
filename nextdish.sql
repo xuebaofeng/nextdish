@@ -13,17 +13,35 @@ CREATE TABLE payment_sms (
 	date TEXT
 );
 
+CREATE TABLE payment_last (
+	date TEXT
+);
+
 --DELETE from payment ;
 
-SELECT * from payment p ;
+SELECT * from payment p where p.date > (select max(date) from payment_last ps)  order by date desc;
 
-SELECT sum(amount) from payment p ;
-SELECT sum(amount) from payment p where p.status ='Paid';
-SELECT sum(amount) from payment p where p.status ='Paid' and p.note <> 'Customer Tips';
+SELECT sum(amount) from payment p where p.date > (select max(date) from payment_last ps);
+SELECT sum(amount) from payment p where p.status ='Paid' and p.date > (select max(date) from payment_last ps);
+SELECT sum(amount) from payment p where p.status ='Paid' and p.note <> 'Customer Tips' and p.date > (select max(date) from payment_last ps);
 
-INSERT INTO payment_sms (amount, date) VALUES(449.50, '2021-04-21');
-INSERT INTO payment_sms (amount, date) VALUES(361.25, '2021-04-14');
-INSERT INTO payment_sms (amount, date) VALUES(416.81, '2021-04-06');
-INSERT INTO payment_sms (amount, date) VALUES(209.75, '2021-03-30');
+select * from payment_sms ps;
+select * from payment_last ps;
+select * from payment ps;
 
-select sum(amount) from payment_sms;
+INSERT INTO payment_last (date) VALUES('20210427');
+
+INSERT INTO payment_sms (amount, date) VALUES(391.32, '20210505');
+INSERT INTO payment_sms (amount, date) VALUES(187.33, '20210427');
+INSERT INTO payment_sms (amount, date) VALUES(449.50, '20210421');
+INSERT INTO payment_sms (amount, date) VALUES(361.25, '20210414');
+INSERT INTO payment_sms (amount, date) VALUES(416.81, '20210406');
+INSERT INTO payment_sms (amount, date) VALUES(209.75, '20210330');
+
+select sum(amount) from payment_sms p where p.date > (select max(date) from payment_last ps);
+
+
+--update payment  set status = 'Paid' where status = '已付款';
+
+select  'Total paid:' || (SELECT sum(amount) from payment p where p.status ='Paid'  and p.date > (select max(date) from payment_last ps)) 
+|| ', pay Baofeng:' || sum(amount) from payment p where p.status ='Paid' and p.note <> 'Customer Tips'  and p.date > (select max(date) from payment_last ps);

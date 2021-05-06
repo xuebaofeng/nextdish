@@ -1,12 +1,13 @@
 package bf.nextdish;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.List;
 
 public class NextdishApplication {
 
@@ -15,18 +16,26 @@ public class NextdishApplication {
     public static void main(String[] args) throws Exception {
         System.out.println("test");
         getConnection();
-        List<String> lines = Files.readAllLines(Path.of("payment.txt"));
-        for (String line : lines) {
-            if (line.startsWith("Date") || line.startsWith("日期"))
-                continue;
-            String[] columns = line.split("\\t");
-            for (String column : columns) {
-                System.out.println(column);
-            }
+        Document doc = PaymentFetcher.urlToDoc();
+        Elements list = doc.select("#credit-table > tbody");
+        for (Element row : list.select("tr")) {
+            System.out.println(row.text());
+            Elements tds = row.select("td");
+            String[] columns = toColumns(tds);
+
             if (exist(columns))
                 continue;
             insertPayment(columns);
         }
+    }
+
+    private static String[] toColumns(Elements tds) {
+        String[] columns = new String[tds.size()];
+        int index = 0;
+        for (Element td : tds) {
+            columns[index++] = td.text();
+        }
+        return columns;
     }
 
     private static void insertPayment(String[] columns) throws Exception {
@@ -38,11 +47,12 @@ public class NextdishApplication {
                 stmt.setDouble(++index, Double.parseDouble(column.substring(1)));
                 continue;
             }
+            if(column.equals("已付款"))
+                column = "Paid";
             stmt.setObject(++index, column);
         }
         stmt.execute();
         stmt.close();
-        c.close();
     }
 
     private static Connection getConnection() throws Exception {
