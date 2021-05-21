@@ -47,9 +47,10 @@ public class NextdishApplication {
                 stmt.setDouble(++index, Double.parseDouble(column.substring(1)));
                 continue;
             }
-            if(column.equals("已付款"))
-                column = "Paid";
-            stmt.setObject(++index, column);
+            String value = column;
+            if (column.contains("已付款"))
+                value = "Paid";
+            stmt.setObject(++index, value);
         }
         stmt.execute();
         stmt.close();
