@@ -33,6 +33,7 @@ select * from payment ps order by date desc;
 
 INSERT INTO payment_last (date) VALUES('20210427');
 
+INSERT INTO payment_sms (amount, date) VALUES(118.75, '20210525');
 INSERT INTO payment_sms (amount, date) VALUES(175.83, '20210518');
 INSERT INTO payment_sms (amount, date) VALUES(151.33, '20210511');
 INSERT INTO payment_sms (amount, date) VALUES(391.32, '20210505');
