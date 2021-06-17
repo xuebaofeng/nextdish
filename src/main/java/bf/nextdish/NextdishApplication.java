@@ -23,7 +23,7 @@ public class NextdishApplication {
             Elements tds = row.select("td");
             String[] columns = toColumns(tds);
 
-            if (exist(columns))
+            if (columns[3].equals("未付款") || exist(columns))
                 continue;
             insertPayment(columns);
         }
@@ -39,6 +39,8 @@ public class NextdishApplication {
     }
 
     private static void insertPayment(String[] columns) throws Exception {
+        if(columns[3].equals("未付款"))
+            return;
         Connection c = getConnection();
         PreparedStatement stmt = c.prepareStatement("INSERT INTO payment (date, note, amount, status) VALUES(?, ?, ?, ?)");
         int index = 0;
