@@ -39,6 +39,7 @@ select  '总收款:' || (select sum(amount) from payment_sms p where p.date > (s
 INSERT INTO payment_last (amount, date) VALUES(1376, '20210427');
 
 
+INSERT INTO payment_sms (amount, date) VALUES(407.5, '20210706');
 INSERT INTO payment_sms (amount, date) VALUES(360.84, '20210630');
 INSERT INTO payment_sms (amount, date) VALUES(373.41, '20210623');
 INSERT INTO payment_sms (amount, date) VALUES(433.33, '20210616');
