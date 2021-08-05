@@ -14,7 +14,6 @@ public class NextdishApplication {
     private static Connection connection;
 
     public static void main(String[] args) throws Exception {
-        System.out.println("test");
         getConnection();
         Document doc = PaymentFetcher.urlToDoc();
         Elements list = doc.select("#credit-table > tbody");
