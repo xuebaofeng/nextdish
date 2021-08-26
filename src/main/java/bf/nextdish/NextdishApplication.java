@@ -57,7 +57,7 @@ public class NextdishApplication {
         stmt.close();
     }
 
-    private static Connection getConnection() throws Exception {
+    static Connection getConnection() throws Exception {
         Class.forName("org.sqlite.JDBC");
         if (connection != null)
             return connection;
