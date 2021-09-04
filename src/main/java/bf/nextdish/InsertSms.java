@@ -20,7 +20,7 @@ public class InsertSms {
 
     public static void main(String[] args) throws Exception {
         getConnection();
-        String sms = "Dear Nextdish driver, your delivery payment before 08/25 , a total of $534.42, has been transferred to your bank account. You should receive it in 2-3 days. Please feel free to contact us if you have any question";
+        String sms = "Dear Nextdish driver, your delivery payment before 09/01 , a total of $551.85, has been transferred to your bank account. You should receive it in 2-3 days. Please feel free to contact us if you have any question";
 
         double amount = 534.42;
         amount = Double.parseDouble(sms.split("\\$")[1].split(",")[0]);

@@ -34,7 +34,7 @@ SELECT sum(amount) from payment p where p.status ='Paid' and p.date > (select ma
 
 select * from payment_last ps;
 
-update payment set status = 'Paid' where date < '20210818';
+update payment set status = 'Paid' where status = '已付款';
 
 
 select  '总收款:' || (select sum(amount) from payment_sms p where p.date > (select max(date) from payment_last ps) and p.date <= (select max(date) from payment_sms ps)) 
